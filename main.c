@@ -40,14 +40,11 @@ int main() {
     // }
     
     if (RTC->ISR & RTC_ISR_RSF) {
-      uint32_t TimeToCompute = RTC->TR;
-      uint8_t su = TimeToCompute & RTC_TR_SU;
-      display[0] = su;
-     // DateToCompute = RTC->DR; /* need to read date also */
+      sTime currTime;
+      rtcDecode(RTC->TR, &currTime);
+      display[0] = currTime.seconds;
     }
-    if (RTC->ISR & RTC_ISR_INITS) {
-      display[1] = 1;
-    }
+
 
     for (int i = 0; i < 2; ++i) {
      for (int j = 0; j < 2; ++j) {
