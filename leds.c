@@ -21,20 +21,20 @@ void init_leds(void) {
 
 
 static void led(uint8_t state, uint8_t ledIdx) {
-  switch (ledIdx) {
-  case LED_RED:
-    GPIOC->BSRR = state ? GPIO_BSRR_BS_6 : GPIO_BSRR_BR_6;
-    break;
-  case LED_BLUE:
-    GPIOC->BSRR = state ? GPIO_BSRR_BS_7 : GPIO_BSRR_BR_7;
-    break;
-  case LED_ORANGE:
-    GPIOC->BSRR = state ? GPIO_BSRR_BS_8 : GPIO_BSRR_BR_8;
-    break;
-  case LED_GREEN:
-    GPIOC->BSRR = state ? GPIO_BSRR_BS_9 : GPIO_BSRR_BR_9;
-    break;
-  }
+  // switch (ledIdx) {
+  // case LED_RED:
+  //   GPIOC->BSRR = state ? GPIO_BSRR_BS_6 : GPIO_BSRR_BR_6;
+  //   break;
+  // case LED_BLUE:
+  //   GPIOC->BSRR = state ? GPIO_BSRR_BS_7 : GPIO_BSRR_BR_7;
+  //   break;
+  // case LED_ORANGE:
+  //   GPIOC->BSRR = state ? GPIO_BSRR_BS_8 : GPIO_BSRR_BR_8;
+  //   break;
+  // case LED_GREEN:
+  //   GPIOC->BSRR = state ? GPIO_BSRR_BS_9 : GPIO_BSRR_BR_9;
+  //   break;
+  // }
 }
 
 void leds_refresh() {

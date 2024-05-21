@@ -21,12 +21,14 @@ void init_btns() {
   GPIOA->MODER |= GPIO_MODER_MODER15_0;
 }
 
-
-
 uint8_t btn_mat_state[2][2] = {{0, 0}, {0, 0}};
+uint8_t user_btn_state = 0;
+
 void read_btns() {
   static uint8_t kline = 0;
   static uint8_t btn_mat_ticks[2][2] = {{0, 0}, {0, 0}};
+
+  static uint8_t user_btn_ticks = 0;
 
   GPIOA->BSRR = !kline ? GPIO_BSRR_BS_15 : GPIO_BSRR_BR_15;
   GPIOC->BSRR = kline ? GPIO_BSRR_BS_12 : GPIO_BSRR_BR_12;  
@@ -34,6 +36,11 @@ void read_btns() {
 
   uint8_t b1 = (GPIOA->IDR & GPIO_IDR_4) ? 1 : 0;
   uint8_t b2 = (GPIOA->IDR & GPIO_IDR_5) ? 1 : 0;
+
+  uint8_t userBtn = (GPIOA->IDR & GPIO_IDR_0) ? 1 : 0;
+  if (userBtn != user_btn_state)
+    ++user_btn_ticks;
+  else user_btn_ticks = 0;
 
   if (b1 != btn_mat_state[kline][0])
     ++btn_mat_ticks[kline][0];
@@ -47,8 +54,7 @@ void read_btns() {
     btn_mat_state[kline][0] = b1;
   if (btn_mat_ticks[kline][1] == 10)
     btn_mat_state[kline][1] = b2;
-}
 
-static uint8_t user_button_read() {
-  return (GPIOA->IDR & GPIO_IDR_0) ? 1 : 0;
+  if (user_btn_ticks == 10)
+    user_btn_state = userBtn;
 }

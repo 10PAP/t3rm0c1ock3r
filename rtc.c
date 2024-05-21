@@ -30,13 +30,20 @@ void init_rtc(void) {
 }
 
 uint32_t rtcEncode(const sTime *t) {
-  return ((t->hours / 10) << RTC_TR_HT_Pos) | ((t->hours % 10) << RTC_TR_HU_Pos) |
-         ((t->minutes / 10) << RTC_TR_MNT_Pos) | ((t->minutes % 10) << RTC_TR_MNU_Pos) |
-         ((t->seconds / 10) << RTC_TR_ST_Pos) | ((t->seconds % 10) << RTC_TR_SU_Pos);
+  return ((t->hours / 10) << RTC_TR_HT_Pos) |
+         ((t->hours % 10) << RTC_TR_HU_Pos) |
+         ((t->minutes / 10) << RTC_TR_MNT_Pos) |
+         ((t->minutes % 10) << RTC_TR_MNU_Pos) |
+         ((t->seconds / 10) << RTC_TR_ST_Pos) |
+         ((t->seconds % 10) << RTC_TR_SU_Pos);
 }
 
 uint32_t rtcDecode(uint32_t iTime, sTime *oTime) {
-    oTime->hours = 10 * ((iTime & RTC_TR_HT_Msk) >> RTC_TR_HT_Pos) + ((iTime & RTC_TR_HU_Msk) >> RTC_TR_HU_Pos);
-    oTime->minutes = 10 * ((iTime & RTC_TR_MNT_Msk) >> RTC_TR_MNT_Pos) + ((iTime & RTC_TR_MNU_Msk) >> RTC_TR_MNU_Pos);
-    oTime->seconds = 10 * ((iTime & RTC_TR_ST_Msk) >> RTC_TR_ST_Pos) + ((iTime & RTC_TR_SU_Msk) >> RTC_TR_SU_Pos);
+  oTime->hours = 10 * ((iTime & RTC_TR_HT_Msk) >> RTC_TR_HT_Pos) +
+                 ((iTime & RTC_TR_HU_Msk) >> RTC_TR_HU_Pos);
+  oTime->minutes = 10 * ((iTime & RTC_TR_MNT_Msk) >> RTC_TR_MNT_Pos) +
+                   ((iTime & RTC_TR_MNU_Msk) >> RTC_TR_MNU_Pos);
+  oTime->seconds = 10 * ((iTime & RTC_TR_ST_Msk) >> RTC_TR_ST_Pos) +
+                   ((iTime & RTC_TR_SU_Msk) >> RTC_TR_SU_Pos);
 }
+// https://microtechnics.ru/profilegrid_blogs/chast-16-tajmer-realnogo-vremeni-rtc-na-c/

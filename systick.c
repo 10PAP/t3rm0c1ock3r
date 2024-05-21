@@ -1,16 +1,18 @@
-#include "stm32f0xx.h"
 #include "systick.h"
+#include "adc.h"
 #include "buttons.h"
-#include "spi.h"
 #include "display.h"
 #include "leds.h"
-#include "adc.h"
+#include "spi.h"
+#include "stm32f0xx.h"
+
 
 void init_systick() {
-    SystemCoreClockUpdate();
-    SysTick->LOAD = SystemCoreClock / 1000 - 1; // reload value
-    SysTick->VAL = 0; // current value
-    SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_TICKINT_Msk;
+  SystemCoreClockUpdate();
+  SysTick->LOAD = SystemCoreClock / 1000 - 1; // reload value
+  SysTick->VAL = 0;                           // current value
+  SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk |
+                  SysTick_CTRL_TICKINT_Msk;
 }
 
 static void check_tick() {
@@ -19,7 +21,9 @@ static void check_tick() {
 
 int cnt = 0;
 volatile uint8_t ADC_accumulated = 0;
-void SysTick_Handler(void){
+volatile uint32_t globalSystickCounter = 0;
+void SysTick_Handler(void) {
+  ++globalSystickCounter;
   read_btns();
   ++cnt;
   if (cnt == 100) {
@@ -28,3 +32,7 @@ void SysTick_Handler(void){
   }
 }
 
+void wait(uint32_t mls) {
+  uint32_t timerState = globalSystickCounter;
+  while (globalSystickCounter - timerState < mls);
+}
