@@ -20,9 +20,13 @@ static void check_tick() {
 }
 
 int cnt = 0;
+#define tick long
 volatile uint8_t ADC_accumulated = 0;
 volatile uint32_t globalSystickCounter = 0;
+extern volatile tick current_tick;
+
 void SysTick_Handler(void) {
+  current_tick++;
   ++globalSystickCounter;
   read_btns();
   ++cnt;
